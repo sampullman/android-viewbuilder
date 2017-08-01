@@ -33,6 +33,21 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     private ParentType parentType = ParentType.VIEWGROUP;
     private OnClickListener clickListener;
 
+    public B load(GenericViewBuilder from) {
+        this.weight = from.weight;
+        this.layoutWidth = from.layoutWidth;
+        this.layoutHeight = from.layoutHeight;
+        this.layoutGravity = from.layoutGravity;
+        this.backgroundColor = from.backgroundColor;
+        this.paddingLeft = from.paddingLeft;
+        this.paddingTop = from.paddingTop;
+        this.paddingRight = from.paddingRight;
+        this.paddingBottom = from.paddingBottom;
+        this.parentType = from.parentType;
+        this.clickListener = from.clickListener;
+        return (B)this;
+    }
+
     public V build(Context c, V v) {
         v.setLayoutParams(makeParams());
         if(backgroundColor != -1) {

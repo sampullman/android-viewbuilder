@@ -10,6 +10,14 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
     private CharSequence hint;
     private float textSize = 16f;
 
+    public B load(GenericTextViewBuilder from) {
+        this.gravity = from.gravity;
+        this.text = from.text;
+        this.hint = from.hint;
+        this.textSize = from.textSize;
+        return super.load(from);
+    }
+
     public V build(Context c, V v) {
         v.setText(text);
         v.setHint(hint);

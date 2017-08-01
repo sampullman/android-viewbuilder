@@ -17,6 +17,7 @@ import com.threedbj.viewbuilder.EditTextBuilder;
 import com.threedbj.viewbuilder.FrameLayoutBuilder;
 import com.threedbj.viewbuilder.LinearLayoutBuilder;
 import com.threedbj.viewbuilder.TextViewBuilder;
+import com.threedbj.viewbuilder.ViewBuilder;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
@@ -28,21 +29,24 @@ public class AllWidgetsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         // Vertical linear layout
         LinearLayout root = new LinearLayoutBuilder().vertical().build(this);
 
         // Horizontal linear layout
         LinearLayout row1 = new LinearLayoutBuilder().inLinear().height(0).build(root);
 
+        // Base parameters for an item in a horizontal linear layout
+        // It's not that useful here, this is just an example
+        ViewBuilder rowItem = new ViewBuilder().inLinear().width(0);
+
         // TextView
-        new TextViewBuilder()
-                .inLinear().width(0)
+        new TextViewBuilder().load(rowItem)
                 .text("Howdy!").textSize(22f)
                 .build(row1);
 
         // Button
-        new ButtonBuilder()
-                .inLinear().width(0)
+        new ButtonBuilder().load(rowItem)
                 .text("Useful Button")
                 .listener(new OnClickListener() {
                     @Override
@@ -53,8 +57,8 @@ public class AllWidgetsActivity extends AppCompatActivity {
                 .build(row1);
 
         // EditText
-        new EditTextBuilder()
-                .inLinear().width(0).height(WRAP_CONTENT)
+        new EditTextBuilder().load(rowItem)
+                .height(WRAP_CONTENT)
                 .paddingDp(6, 16, 16, 6)
                 .hint("HINT!")
                 .build(row1);
@@ -64,7 +68,7 @@ public class AllWidgetsActivity extends AppCompatActivity {
                 .text("Hello").textSize(24f)
                 .wrap().inFrame().layoutGravity(Gravity.CENTER)
                 .build(new FrameLayoutBuilder()
-                        .inLinear().height(0)
+                        .load(rowItem)
                         .build(root));
 
         setContentView(root);

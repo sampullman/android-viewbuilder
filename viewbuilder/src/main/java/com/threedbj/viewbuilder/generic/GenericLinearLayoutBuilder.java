@@ -10,6 +10,11 @@ import static android.widget.LinearLayout.VERTICAL;
 public abstract class GenericLinearLayoutBuilder<B extends GenericLinearLayoutBuilder<B, V>, V extends LinearLayout> extends GenericViewGroupBuilder<B, V> {
     private int orientation = HORIZONTAL;
 
+    public B load(GenericLinearLayoutBuilder from) {
+        this.orientation = from.orientation;
+        return super.load(from);
+    }
+
     public V build(Context c, V v) {
         v.setOrientation(this.orientation);
         return super.build(c, v);
