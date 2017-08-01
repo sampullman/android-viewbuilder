@@ -3,7 +3,10 @@ package com.threedbj.viewbuilder.generic;
 import android.content.Context;
 import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -27,14 +30,25 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     private @ColorRes int backgroundColor = -1;
     private int paddingLeft, paddingTop, paddingRight, paddingBottom;
     private ParentType parentType = ParentType.VIEWGROUP;
+    private OnClickListener clickListener;
 
     public V build(Context c, V v) {
         v.setLayoutParams(makeParams());
         if(backgroundColor != -1) {
             v.setBackgroundColor(ContextCompat.getColor(c, backgroundColor));
         }
+        Log.d("ViewBuilder", String.format("Building: %d %d : %d", layoutWidth, layoutHeight, parentType.ordinal()));
         v.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+        v.setOnClickListener(clickListener);
         return v;
+    }
+
+    public abstract V build(Context c);
+
+    public V build(ViewGroup vg) {
+        V me = build(vg.getContext());
+        vg.addView(me);
+        return me;
     }
 
     private LayoutParams makeParams() {
@@ -115,6 +129,11 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
 
     public B weight(float weight) {
         this.weight = weight;
+        return (B)this;
+    }
+
+    public B listener(OnClickListener listener) {
+        this.clickListener = listener;
         return (B)this;
     }
 }
