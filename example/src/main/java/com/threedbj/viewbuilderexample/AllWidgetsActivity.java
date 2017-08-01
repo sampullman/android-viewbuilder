@@ -50,6 +50,7 @@ public class AllWidgetsActivity extends AppCompatActivity {
         // TextView
         new TextViewBuilder().load(rowItem)
                 .text("Howdy!").textSize(22f)
+                .color(R.color.blueish)
                 .build(row1);
 
         // Button
@@ -73,6 +74,7 @@ public class AllWidgetsActivity extends AppCompatActivity {
         // FrameLayout with TextView
         helloWorld = new TextViewBuilder()
                 .text("Hello").textSize(24f)
+                .bold().italic()
                 .wrap().inFrame().layoutGravity(Gravity.CENTER)
                 .build(new FrameLayoutBuilder()
                         .load(row)
