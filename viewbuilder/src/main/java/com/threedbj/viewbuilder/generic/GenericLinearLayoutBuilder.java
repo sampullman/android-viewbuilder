@@ -6,8 +6,9 @@ import android.widget.LinearLayout;
 import static android.widget.LinearLayout.HORIZONTAL;
 import static android.widget.LinearLayout.VERTICAL;
 
+@SuppressWarnings("unchecked")
 public abstract class GenericLinearLayoutBuilder<B extends GenericLinearLayoutBuilder<B, V>, V extends LinearLayout> extends GenericViewGroupBuilder<B, V> {
-    int orientation = HORIZONTAL;
+    private int orientation = HORIZONTAL;
 
     public V build(Context c, V v) {
         v.setOrientation(this.orientation);

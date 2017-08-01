@@ -1,6 +1,5 @@
 package com.threedbj.viewbuilder.util;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 

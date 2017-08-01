@@ -18,6 +18,7 @@ import static android.view.Gravity.CENTER;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
+@SuppressWarnings("unchecked")
 public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V extends View> {
 
     private enum ParentType {

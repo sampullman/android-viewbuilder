@@ -3,6 +3,7 @@ package com.threedbj.viewbuilder.generic;
 import android.content.Context;
 import android.widget.TextView;
 
+@SuppressWarnings("unchecked")
 public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B, V>, V extends TextView> extends GenericViewBuilder<B, V> {
     private int gravity = -1;
     private CharSequence text = "";
