@@ -23,9 +23,11 @@ import com.threedbj.viewbuilder.ViewBuilder;
 
 import threedbj.com.viewbuilderexample.R;
 
+import static android.view.Gravity.CENTER;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class AllWidgetsActivity extends AppCompatActivity {
+    private final int GH_FONT = 1;
     TextView helloWorld;
     Handler handler = new Handler(Looper.getMainLooper());
 
@@ -33,19 +35,21 @@ public class AllWidgetsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        TextViewBuilder.addFont(this, "font/GloriaHallelujah.ttf", GH_FONT);
+
+        // Base parameters for an item in a horizontal linear layout
+        // It's not that useful here, this is just an example
+        ViewBuilder rowItem = new ViewBuilder().inLinear().width(0);
+        ViewBuilder colItem = new ViewBuilder().inLinear().height(0);
 
         // Vertical linear layout
         LinearLayout root = new LinearLayoutBuilder().vertical().build(this);
 
         // Base parameters for row
-        ViewBuilder row = new ViewBuilder().inLinear().height(0);
+        ViewBuilder row = new ViewBuilder().load(colItem);
 
         // Horizontal linear layout
         LinearLayout row1 = new LinearLayoutBuilder().load(row).build(root);
-
-        // Base parameters for an item in a horizontal linear layout
-        // It's not that useful here, this is just an example
-        ViewBuilder rowItem = new ViewBuilder().inLinear().width(0);
 
         // TextView
         new TextViewBuilder().load(rowItem)
@@ -64,18 +68,25 @@ public class AllWidgetsActivity extends AppCompatActivity {
                 })
                 .build(row1);
 
+        LinearLayout row1Column3 = new LinearLayoutBuilder().load(rowItem).vertical().build(row1);
         // EditText
-        new EditTextBuilder().load(rowItem)
+        new EditTextBuilder().load(colItem)
                 .height(WRAP_CONTENT)
                 .paddingDp(6, 16, 16, 6)
                 .hint("HINT!")
-                .build(row1);
+                .build(row1Column3);
+        new TextViewBuilder().load(colItem).weight(3)
+                .paddingDp(6, 10, 6, 0)
+                .font(GH_FONT).textSize(14)
+                .gravity(CENTER)
+                .text("A custom font. It is good.")
+                .build(row1Column3);
 
         // FrameLayout with TextView
         helloWorld = new TextViewBuilder()
                 .text("Hello").textSize(24f)
                 .bold().italic()
-                .wrap().inFrame().layoutGravity(Gravity.CENTER)
+                .wrap().inFrame().layoutGravity(CENTER)
                 .build(new FrameLayoutBuilder()
                         .load(row)
                         .build(root));
