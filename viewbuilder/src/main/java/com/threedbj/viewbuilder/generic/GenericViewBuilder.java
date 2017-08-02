@@ -1,6 +1,7 @@
 package com.threedbj.viewbuilder.generic;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -26,6 +27,73 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         VIEWGROUP, LINEAR, FRAME, RELATIVE
     }
 
+    // Special class to avoid some copies in load() during normal use
+    private class RelativeLayoutParams {
+        int above, alignBaseline, alignBottom, alignEnd, alignStart, alignTop, below, endOf, startOf;
+        boolean parentBottom, parentEnd, parentStart, parentTop, centerHorizontal, centerVertical, center;
+
+        RelativeLayoutParams(RelativeLayoutParams from) {
+            this.above = from.above;
+            this.alignBaseline = from.alignBaseline;
+            this.alignBottom = from.alignBottom;
+            this.alignEnd = from.alignEnd;
+            this.alignStart = from.alignStart;
+            this.alignTop = from.alignTop;
+            this.below = from.below;
+            this.endOf = from.endOf;
+            this.startOf = from.startOf;
+            this.parentBottom = from.parentBottom;
+            this.parentEnd = from.parentEnd;
+            this.parentStart = from.parentStart;
+            this.parentTop = from.parentTop;
+            this.centerHorizontal = from.centerHorizontal;
+            this.centerVertical = from.centerVertical;
+            this.center = from.center;
+        }
+
+        private void addRule(RelativeLayout.LayoutParams params, int verb, int id) {
+            if(id != 0) {
+                params.addRule(verb, id);
+            }
+        }
+
+        private void addRule(RelativeLayout.LayoutParams params, int verb, boolean enable) {
+            if(enable) {
+                params.addRule(verb);
+            }
+        }
+
+        RelativeLayout.LayoutParams addRules(RelativeLayout.LayoutParams params) {
+            addRule(params, RelativeLayout.ABOVE, above);
+            addRule(params, RelativeLayout.ALIGN_BASELINE, alignBaseline);
+            addRule(params, RelativeLayout.ALIGN_BOTTOM, alignBottom);
+            if(Build.VERSION.SDK_INT >= 17) {
+                addRule(params, RelativeLayout.ALIGN_END, alignEnd);
+                addRule(params, RelativeLayout.ALIGN_START, alignStart);
+                addRule(params, RelativeLayout.END_OF, endOf);
+                addRule(params, RelativeLayout.START_OF, startOf);
+                addRule(params, RelativeLayout.ALIGN_PARENT_END, parentEnd);
+                addRule(params, RelativeLayout.ALIGN_PARENT_START, parentStart);
+            } else {
+                addRule(params, RelativeLayout.ALIGN_RIGHT, alignEnd);
+                addRule(params, RelativeLayout.ALIGN_LEFT, alignStart);
+                addRule(params, RelativeLayout.RIGHT_OF, endOf);
+                addRule(params, RelativeLayout.LEFT_OF, startOf);
+                addRule(params, RelativeLayout.ALIGN_PARENT_LEFT, parentEnd);
+                addRule(params, RelativeLayout.ALIGN_PARENT_RIGHT, parentStart);
+            }
+            addRule(params, RelativeLayout.ALIGN_TOP, alignTop);
+            addRule(params, RelativeLayout.BELOW, below);
+            addRule(params, RelativeLayout.ALIGN_PARENT_BOTTOM, parentBottom);
+            addRule(params, RelativeLayout.ALIGN_PARENT_TOP, parentTop);
+            addRule(params, RelativeLayout.CENTER_HORIZONTAL, centerHorizontal);
+            addRule(params, RelativeLayout.CENTER_VERTICAL, centerVertical);
+            addRule(params, RelativeLayout.CENTER_IN_PARENT, center);
+            return params;
+        }
+    }
+
+    private int id;
     private float weight = 1f;
     private int layoutWidth = MATCH_PARENT, layoutHeight = MATCH_PARENT;
     private int layoutGravity = CENTER;
@@ -34,6 +102,7 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     private int marginLeft, marginTop, marginRight, marginBottom;
     private ParentType parentType = ParentType.VIEWGROUP;
     private OnClickListener clickListener;
+    private RelativeLayoutParams relativeLayoutParams;
 
     public B load(GenericViewBuilder from) {
         this.weight = from.weight;
@@ -51,6 +120,9 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         this.marginBottom = from.marginBottom;
         this.parentType = from.parentType;
         this.clickListener = from.clickListener;
+        if(from.relativeLayoutParams != null) {
+            this.relativeLayoutParams = new RelativeLayoutParams(from.relativeLayoutParams);
+        }
         return (B)this;
     }
 
