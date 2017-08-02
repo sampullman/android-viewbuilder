@@ -3,6 +3,7 @@ package com.threedbj.viewbuilder.generic;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.ColorRes;
+import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
@@ -16,12 +17,15 @@ import android.widget.RelativeLayout;
 
 import com.threedbj.viewbuilder.util.Util;
 
+import java.util.Random;
+
 import static android.view.Gravity.CENTER;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 @SuppressWarnings("unchecked")
 public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V extends View> {
+    private static int ID_GENERATOR = 0;
 
     private enum ParentType {
         VIEWGROUP, LINEAR, FRAME, RELATIVE
@@ -31,6 +35,8 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     private class RelativeLayoutParams {
         int above, alignBaseline, alignBottom, alignEnd, alignStart, alignTop, below, endOf, startOf;
         boolean parentBottom, parentEnd, parentStart, parentTop, centerHorizontal, centerVertical, center;
+
+        RelativeLayoutParams() {}
 
         RelativeLayoutParams(RelativeLayoutParams from) {
             this.above = from.above;
@@ -93,7 +99,7 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         }
     }
 
-    private int id;
+    private boolean generateId;
     private float weight = 1f;
     private int layoutWidth = MATCH_PARENT, layoutHeight = MATCH_PARENT;
     private int layoutGravity = CENTER;
@@ -105,6 +111,7 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     private RelativeLayoutParams relativeLayoutParams;
 
     public B load(GenericViewBuilder from) {
+        this.generateId = from.generateId;
         this.weight = from.weight;
         this.layoutWidth = from.layoutWidth;
         this.layoutHeight = from.layoutHeight;
@@ -134,6 +141,10 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         Log.d("ViewBuilder", String.format("Building: %d %d : %d", layoutWidth, layoutHeight, parentType.ordinal()));
         v.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
         v.setOnClickListener(clickListener);
+        if(generateId) {
+            v.setId(nextId());
+            Log.d("ViewBuilder", "ID: "+Integer.toString(v.getId()));
+        }
         return v;
     }
 
@@ -143,6 +154,12 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         V me = build(vg.getContext());
         vg.addView(me);
         return me;
+    }
+
+    private static int nextId() {
+        // Make sure to only return positive numbers, in case you need 2 billion View ids
+        ID_GENERATOR = (ID_GENERATOR + 1) % (Integer.MAX_VALUE - 1);
+        return ID_GENERATOR;
     }
 
     private LayoutParams makeParams() {
@@ -155,6 +172,7 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
             case RELATIVE:
                 params = new RelativeLayout.LayoutParams(layoutWidth, layoutHeight);
                 params.setMargins(marginLeft, marginTop, marginRight, marginBottom);
+                relativeParams().addRules((RelativeLayout.LayoutParams)params);
                 break;
             case FRAME:
                 params = new FrameLayout.LayoutParams(layoutWidth, layoutHeight, layoutGravity);
@@ -240,6 +258,131 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
 
     public B listener(OnClickListener listener) {
         this.clickListener = listener;
+        return (B)this;
+    }
+
+    public B id() {
+        this.generateId = true;
+        return (B)this;
+    }
+
+    private RelativeLayoutParams relativeParams() {
+        if(relativeLayoutParams == null) {
+            relativeLayoutParams = new RelativeLayoutParams();
+            this.id();
+        }
+        return relativeLayoutParams;
+    }
+
+    public B above(@IdRes int id) {
+        relativeParams().above = id;
+        return (B)this;
+    }
+
+    public B above(View v) {
+        return above(v.getId());
+    }
+
+    public B alignBaseline(@IdRes int id){
+        relativeParams().alignBaseline = id;
+        return (B)this;
+    }
+
+    public B alignBaseline(View v) {
+        return alignBaseline(v.getId());
+    }
+
+    public B alignBottom(@IdRes int id){
+        relativeParams().alignBottom = id;
+        return (B)this;
+    }
+
+    public B alignBottom(View v) {
+        return alignBottom(v.getId());
+    }
+
+    public B alignEnd(@IdRes int id){
+        relativeParams().alignEnd = id;
+        return (B)this;
+    }
+
+    public B alignStart(@IdRes int id){
+        relativeParams().alignStart = id;
+        return (B)this;
+    }
+
+    public B alignStart(View v) {
+        return alignStart(v.getId());
+    }
+
+    public B alignTop(@IdRes int id){
+        relativeParams().alignTop = id;
+        return (B)this;
+    }
+
+    public B alignTop(View v) {
+        return alignTop(v.getId());
+    }
+
+    public B below(@IdRes int id){
+        relativeParams().below = id;
+        return (B)this;
+    }
+
+    public B below(View v) {
+        return below(v.getId());
+    }
+
+    public B endOf(@IdRes int id){
+        relativeParams().endOf = id;
+        return (B)this;
+    }
+
+    public B endOf(View v) {
+        return endOf(v.getId());
+    }
+
+    public B startOf(@IdRes int id){
+        relativeParams().startOf = id;
+        return (B)this;
+    }
+
+    public B startOf(View v) {
+        return startOf(v.getId());
+    }
+
+    public B parentBottom() {
+        relativeParams().parentBottom = true;
+        return (B)this;
+    }
+
+    public B parentEnd() {
+        relativeParams().parentEnd = true;
+        return (B)this;
+    }
+
+    public B parentStart() {
+        relativeParams().parentStart = true;
+        return (B)this;
+    }
+
+    public B parentTop() {
+        relativeParams().parentTop = true;
+        return (B)this;
+    }
+
+    public B centerHorizontal() {
+        relativeParams().centerHorizontal = true;
+        return (B)this;
+    }
+
+    public B centerVertical() {
+        relativeParams().centerVertical = true;
+        return (B)this;
+    }
+
+    public B center() {
+        relativeParams().center = true;
         return (B)this;
     }
 }

@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.view.View.OnClickListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.threedbj.viewbuilder.EditTextBuilder;
 import com.threedbj.viewbuilder.FrameLayoutBuilder;
 import com.threedbj.viewbuilder.ImageViewBuilder;
 import com.threedbj.viewbuilder.LinearLayoutBuilder;
+import com.threedbj.viewbuilder.RelativeLayoutBuilder;
 import com.threedbj.viewbuilder.TextViewBuilder;
 import com.threedbj.viewbuilder.ViewBuilder;
 
@@ -93,7 +95,15 @@ public class AllWidgetsActivity extends AppCompatActivity {
                         .build(root));
 
         LinearLayout row2 = new LinearLayoutBuilder().load(row).build(root);
-        rowItem.build(row2); // Empty View
+
+        // A whole mess of RelativeLayout stuff
+        RelativeLayout row2Item1 = new RelativeLayoutBuilder().load(rowItem).build(row2);
+        View row2Center = new ButtonBuilder().wrap().inRelative().center().text("CENTER").build(row2Item1);
+        new ButtonBuilder().wrap().inRelative().parentTop().parentStart().text("TOP LEFT").build(row2Item1);
+        new ButtonBuilder().wrap().inRelative().parentTop().parentEnd().text("TOP RIGHT").build(row2Item1);
+        View row2Below = new ButtonBuilder().wrap().inRelative().below(row2Center).centerHorizontal().text("B").build(row2Item1);
+        new ButtonBuilder().wrap().inRelative().below(row2Center).startOf(row2Below).text("L").build(row2Item1);
+        new ButtonBuilder().wrap().inRelative().below(row2Center).endOf(row2Below).text("R").build(row2Item1);
 
         // ImageView
         new ImageViewBuilder().load(rowItem)
