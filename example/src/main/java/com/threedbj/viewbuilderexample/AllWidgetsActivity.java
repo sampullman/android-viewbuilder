@@ -54,6 +54,7 @@ public class AllWidgetsActivity extends AppCompatActivity {
         // TextView
         new TextViewBuilder().load(rowItem)
                 .text("Howdy!").textSize(22f)
+                .marginDp(10, 20, 0, 0)
                 .color(R.color.blueish)
                 .build(row1);
 
@@ -63,7 +64,7 @@ public class AllWidgetsActivity extends AppCompatActivity {
                 .listener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(view.getContext(), "Look at me!", Toast.LENGTH_SHORT).show();
+                        toast("Look at me!");
                     }
                 })
                 .build(row1);
@@ -113,4 +114,8 @@ public class AllWidgetsActivity extends AppCompatActivity {
             handler.postDelayed(helloWorldRunnable, 1500);
         }
     };
+
+    private void toast(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,6 +31,7 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     private int layoutGravity = CENTER;
     private @ColorRes int backgroundColor = -1;
     private int paddingLeft, paddingTop, paddingRight, paddingBottom;
+    private int marginLeft, marginTop, marginRight, marginBottom;
     private ParentType parentType = ParentType.VIEWGROUP;
     private OnClickListener clickListener;
 
@@ -43,6 +45,10 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         this.paddingTop = from.paddingTop;
         this.paddingRight = from.paddingRight;
         this.paddingBottom = from.paddingBottom;
+        this.marginLeft = from.marginLeft;
+        this.marginTop = from.marginTop;
+        this.marginRight = from.marginRight;
+        this.marginBottom = from.marginBottom;
         this.parentType = from.parentType;
         this.clickListener = from.clickListener;
         return (B)this;
@@ -68,20 +74,22 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     }
 
     private LayoutParams makeParams() {
-        LayoutParams params;
+        MarginLayoutParams params;
         switch(parentType) {
             case LINEAR:
                 params = new LinearLayout.LayoutParams(layoutWidth, layoutHeight, weight);
+                params.setMargins(marginLeft, marginTop, marginRight, marginBottom);
                 break;
             case RELATIVE:
                 params = new RelativeLayout.LayoutParams(layoutWidth, layoutHeight);
+                params.setMargins(marginLeft, marginTop, marginRight, marginBottom);
                 break;
             case FRAME:
                 params = new FrameLayout.LayoutParams(layoutWidth, layoutHeight, layoutGravity);
+                params.setMargins(marginLeft, marginTop, marginRight, marginBottom);
                 break;
             default:
-                params = new LayoutParams(layoutWidth, layoutHeight);
-                break;
+                return new LayoutParams(layoutWidth, layoutHeight);
         }
         return params;
     }
@@ -108,11 +116,8 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     }
 
     public B paddingDp(int left, int top, int right, int bottom) {
-        this.paddingLeft = Util.dpToPx(left);
-        this.paddingTop = Util.dpToPx(top);
-        this.paddingRight = Util.dpToPx(right);
-        this.paddingBottom = Util.dpToPx(bottom);
-        return (B)this;
+        return paddingPx(Util.dpToPx(left), Util.dpToPx(top),
+                Util.dpToPx(right), Util.dpToPx(bottom));
     }
 
     public B paddingPx(int left, int top, int right, int bottom) {
@@ -120,6 +125,19 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         this.paddingTop = top;
         this.paddingRight = right;
         this.paddingBottom = bottom;
+        return (B)this;
+    }
+
+    public B marginDp(int left, int top, int right, int bottom) {
+        return marginPx(Util.dpToPx(left), Util.dpToPx(top),
+                Util.dpToPx(right), Util.dpToPx(bottom));
+    }
+
+    public B marginPx(int left, int top, int right, int bottom) {
+        this.marginLeft = left;
+        this.marginTop = top;
+        this.marginRight = right;
+        this.marginBottom = bottom;
         return (B)this;
     }
 
