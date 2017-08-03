@@ -210,6 +210,22 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
                 Util.dpToPx(right), Util.dpToPx(bottom));
     }
 
+    public B paddingLeft(int left) {
+        return paddingPx(Util.dpToPx(left), paddingTop, paddingRight, paddingBottom);
+    }
+
+    public B paddingTop(int top) {
+        return paddingPx(paddingLeft, Util.dpToPx(top), paddingRight, paddingBottom);
+    }
+
+    public B paddingRight(int right) {
+        return paddingPx(paddingLeft, paddingTop, Util.dpToPx(right), paddingBottom);
+    }
+
+    public B paddingBottom(int bottom) {
+        return paddingPx(paddingLeft, paddingTop, paddingRight, Util.dpToPx(bottom));
+    }
+
     public B paddingPx(int left, int top, int right, int bottom) {
         this.paddingLeft = left;
         this.paddingTop = top;
@@ -221,6 +237,22 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     public B marginDp(int left, int top, int right, int bottom) {
         return marginPx(Util.dpToPx(left), Util.dpToPx(top),
                 Util.dpToPx(right), Util.dpToPx(bottom));
+    }
+
+    public B marginLeft(int left) {
+        return marginPx(Util.dpToPx(left), marginTop, marginRight, marginBottom);
+    }
+
+    public B marginTop(int top) {
+        return marginPx(marginLeft, Util.dpToPx(top), marginRight, marginBottom);
+    }
+
+    public B marginRight(int right) {
+        return marginPx(marginLeft, marginTop, Util.dpToPx(right), marginBottom);
+    }
+
+    public B marginBottom(int bottom) {
+        return marginPx(marginLeft, marginTop, marginRight, Util.dpToPx(bottom));
     }
 
     public B marginPx(int left, int top, int right, int bottom) {
