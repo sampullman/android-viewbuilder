@@ -1,15 +1,13 @@
 package com.threedbj.viewbuilderexample;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,12 +51,18 @@ public class AllWidgetsActivity extends AppCompatActivity {
         // Horizontal linear layout
         LinearLayout row1 = new LinearLayoutBuilder().load(row).build(root);
 
+        LinearLayout row1Column1 = new LinearLayoutBuilder().load(rowItem).vertical().build(row1);
         // TextView
-        new TextViewBuilder().load(rowItem)
+        new TextViewBuilder().load(colItem)
                 .text("Howdy!").textSize(22f)
                 .marginDp(10, 20, 0, 0)
                 .color(R.color.blueish)
-                .build(row1);
+                .build(row1Column1);
+        new TextViewBuilder().load(colItem)
+                .text("Pad left")
+                .color(R.color.redish)
+                .paddingLeft(16)
+                .build(row1Column1);
 
         // Button
         new ButtonBuilder().load(rowItem)
@@ -79,7 +83,8 @@ public class AllWidgetsActivity extends AppCompatActivity {
                 .hint("HINT!")
                 .build(row1Column3);
         new TextViewBuilder().load(colItem).weight(3)
-                .paddingDp(6, 10, 6, 0)
+                .paddingLeft(6).paddingRight(6)
+                .marginTop(10)
                 .font(GH_FONT).textSize(14)
                 .gravity(CENTER)
                 .text("A custom font. It is good.")
