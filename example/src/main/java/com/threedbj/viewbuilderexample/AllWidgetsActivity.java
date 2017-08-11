@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,9 +18,14 @@ import com.threedbj.viewbuilder.EditTextBuilder;
 import com.threedbj.viewbuilder.FrameLayoutBuilder;
 import com.threedbj.viewbuilder.ImageViewBuilder;
 import com.threedbj.viewbuilder.LinearLayoutBuilder;
+import com.threedbj.viewbuilder.ListViewBuilder;
 import com.threedbj.viewbuilder.RelativeLayoutBuilder;
 import com.threedbj.viewbuilder.TextViewBuilder;
 import com.threedbj.viewbuilder.ViewBuilder;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import threedbj.com.viewbuilderexample.R;
 
@@ -79,9 +85,11 @@ public class AllWidgetsActivity extends AppCompatActivity {
         // EditText
         new EditTextBuilder().load(colItem)
                 .height(WRAP_CONTENT)
-                .paddingDp(6, 16, 16, 6)
+                .paddingDp(6, 16, 16, 0)
                 .hint("HINT!")
+                .noFirstFocus()
                 .build(row1Column3);
+        // TextView with custom font
         new TextViewBuilder().load(colItem).weight(3)
                 .paddingLeft(6).paddingRight(6)
                 .marginTop(10)
@@ -90,31 +98,42 @@ public class AllWidgetsActivity extends AppCompatActivity {
                 .text("A custom font. It is good.")
                 .build(row1Column3);
 
+        LinearLayout row2 = new LinearLayoutBuilder().load(row).build(root);
+        // ListView
+        List<String> list = Arrays.asList("Item1", "Item2", "Item3", "Item4", "Item5", "Item6", "Item7", "Item7");
+
+        ArrayAdapter<String> itemsAdapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>(list));
+        new ListViewBuilder()
+                .adapter(itemsAdapter)
+                .backgroundColor(R.color.light_gray)
+                .build(new FrameLayoutBuilder().load(rowItem)
+                        .build(row2));
+
         // FrameLayout with TextView
         helloWorld = new TextViewBuilder()
                 .text("Hello").textSize(24f)
                 .bold().italic()
                 .wrap().inFrame().layoutGravity(CENTER)
-                .build(new FrameLayoutBuilder()
-                        .load(row)
-                        .build(root));
+                .build(new FrameLayoutBuilder().load(rowItem)
+                        .build(row2));
 
-        LinearLayout row2 = new LinearLayoutBuilder().load(row).build(root);
+        LinearLayout row3 = new LinearLayoutBuilder().load(row).build(root);
 
         // A whole mess of RelativeLayout stuff
-        RelativeLayout row2Item1 = new RelativeLayoutBuilder().load(rowItem).build(row2);
-        View row2Center = new ButtonBuilder().wrap().inRelative().center().text("CENTER").build(row2Item1);
-        new ButtonBuilder().wrap().inRelative().parentTop().parentStart().text("TOP LEFT").build(row2Item1);
-        new ButtonBuilder().wrap().inRelative().parentTop().parentEnd().text("TOP RIGHT").build(row2Item1);
-        View row2Below = new ButtonBuilder().wrap().inRelative().below(row2Center).centerHorizontal().text("B").build(row2Item1);
-        new ButtonBuilder().wrap().inRelative().below(row2Center).startOf(row2Below).text("L").build(row2Item1);
-        new ButtonBuilder().wrap().inRelative().below(row2Center).endOf(row2Below).text("R").build(row2Item1);
+        RelativeLayout row3Item1 = new RelativeLayoutBuilder().load(rowItem).build(row3);
+        View row3Center = new ButtonBuilder().wrap().inRelative().center().text("CENTER").build(row3Item1);
+        new ButtonBuilder().wrap().inRelative().parentTop().parentStart().text("TOP LEFT").build(row3Item1);
+        new ButtonBuilder().wrap().inRelative().parentTop().parentEnd().text("TOP RIGHT").build(row3Item1);
+        View row3Below = new ButtonBuilder().wrap().inRelative().below(row3Center).centerHorizontal().text("B").build(row3Item1);
+        new ButtonBuilder().wrap().inRelative().below(row3Center).startOf(row3Below).text("L").build(row3Item1);
+        new ButtonBuilder().wrap().inRelative().below(row3Center).endOf(row3Below).text("R").build(row3Item1);
 
         // ImageView
         new ImageViewBuilder().load(rowItem)
                 .image(R.drawable.fox)
                 .scale(ImageView.ScaleType.CENTER_CROP)
-                .build(row2);
+                .build(row3);
 
         setContentView(root);
 

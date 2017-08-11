@@ -17,8 +17,6 @@ import android.widget.RelativeLayout;
 
 import com.threedbj.viewbuilder.util.Util;
 
-import java.util.Random;
-
 import static android.view.Gravity.CENTER;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -140,7 +138,9 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         }
         Log.d("ViewBuilder", String.format("Building: %d %d : %d", layoutWidth, layoutHeight, parentType.ordinal()));
         v.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
-        v.setOnClickListener(clickListener);
+        if(clickListener != null) {
+            v.setOnClickListener(clickListener);
+        }
         if(generateId) {
             v.setId(nextId());
             Log.d("ViewBuilder", "ID: "+Integer.toString(v.getId()));

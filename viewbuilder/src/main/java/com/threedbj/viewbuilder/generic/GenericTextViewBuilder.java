@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
 import android.util.SparseArray;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -52,6 +53,7 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
     private Typeface typeface = DEFAULT_FONT;
     private String fontPath;
     private int style = Typeface.NORMAL;
+    private boolean firstFocus = true;
 
     public B load(GenericTextViewBuilder from) {
         this.gravity = from.gravity;
@@ -62,7 +64,16 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
         this.typeface = from.typeface;
         this.fontPath = from.fontPath;
         this.style = from.style;
+        this.firstFocus = from.firstFocus;
         return super.load(from);
+    }
+
+    public V build(ViewGroup vg) {
+        if(firstFocus) {
+            vg.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+            vg.setFocusableInTouchMode(true);
+        }
+        return super.build(vg);
     }
 
     public V build(Context c, V v) {
@@ -147,6 +158,12 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
 
     public B font(int id) {
         this.typeface = FONT_IDS.get(id);
+        return (B)this;
+    }
+
+    // Only works when build(ViewGroup) is called
+    public B noFirstFocus() {
+        this.firstFocus = false;
         return (B)this;
     }
 }

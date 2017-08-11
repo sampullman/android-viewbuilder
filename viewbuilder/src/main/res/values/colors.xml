@@ -2,4 +2,5 @@
 <resources>
     <color name="blueish">#00AAEE</color>
     <color name="redish">#EE00AA</color>
+    <color name="light_gray">#DDDDDD</color>
 </resources>
