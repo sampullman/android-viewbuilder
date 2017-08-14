@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import com.threedbj.viewbuilder.FrameLayoutBuilder;
 import com.threedbj.viewbuilder.ImageViewBuilder;
 import com.threedbj.viewbuilder.LinearLayoutBuilder;
 import com.threedbj.viewbuilder.ListViewBuilder;
+import com.threedbj.viewbuilder.ProgressBarBuilder;
 import com.threedbj.viewbuilder.RelativeLayoutBuilder;
 import com.threedbj.viewbuilder.ScrollViewBuilder;
 import com.threedbj.viewbuilder.TextViewBuilder;
@@ -31,12 +33,12 @@ import java.util.List;
 import threedbj.com.viewbuilderexample.R;
 
 import static android.view.Gravity.CENTER;
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class AllWidgetsActivity extends AppCompatActivity {
     private final int GH_FONT = 1;
     TextView helloWorld;
+    ProgressBar usefulBar;
     Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
@@ -79,6 +81,7 @@ public class AllWidgetsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         toast("Look at me!");
+                        usefulBar.setProgress((usefulBar.getProgress()+1) % (usefulBar.getMax() + 1));
                     }
                 })
                 .build(row1);
@@ -135,7 +138,7 @@ public class AllWidgetsActivity extends AppCompatActivity {
         new ButtonBuilder().wrap().inRelative().below(row3Center).startOf(row3Below).text("L").build(row3Item1);
         new ButtonBuilder().wrap().inRelative().below(row3Center).endOf(row3Below).text("R").build(row3Item1);
 
-        // ImageView and ScrollView
+        // ImageView, ProgressBar in ScrollView
         LinearLayout scroll = new LinearLayoutBuilder()
                 .height(WRAP_CONTENT)
                 .vertical()
@@ -143,8 +146,11 @@ public class AllWidgetsActivity extends AppCompatActivity {
                         .load(rowItem)
                         .overScrollMode(View.OVER_SCROLL_NEVER)
                         .build(row3));
+        new ProgressBarBuilder().height(WRAP_CONTENT).inLinear().build(scroll);
+        usefulBar = new ProgressBarBuilder().height(WRAP_CONTENT).determinate().max(10).progress(5).inLinear().build(scroll);
 
-        ImageViewBuilder fox =new ImageViewBuilder().width(MATCH_PARENT).height(WRAP_CONTENT).inLinear()
+
+        ImageViewBuilder fox = new ImageViewBuilder().height(WRAP_CONTENT).inLinear()
                 .image(R.drawable.fox)
                 .scale(ScaleType.CENTER_INSIDE);
         fox.build(scroll);
