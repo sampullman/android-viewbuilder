@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,6 +20,7 @@ import com.threedbj.viewbuilder.ImageViewBuilder;
 import com.threedbj.viewbuilder.LinearLayoutBuilder;
 import com.threedbj.viewbuilder.ListViewBuilder;
 import com.threedbj.viewbuilder.RelativeLayoutBuilder;
+import com.threedbj.viewbuilder.ScrollViewBuilder;
 import com.threedbj.viewbuilder.TextViewBuilder;
 import com.threedbj.viewbuilder.ViewBuilder;
 
@@ -30,6 +31,7 @@ import java.util.List;
 import threedbj.com.viewbuilderexample.R;
 
 import static android.view.Gravity.CENTER;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class AllWidgetsActivity extends AppCompatActivity {
@@ -122,18 +124,31 @@ public class AllWidgetsActivity extends AppCompatActivity {
 
         // A whole mess of RelativeLayout stuff
         RelativeLayout row3Item1 = new RelativeLayoutBuilder().load(rowItem).build(row3);
+
         View row3Center = new ButtonBuilder().wrap().inRelative().center().text("CENTER").build(row3Item1);
+
         new ButtonBuilder().wrap().inRelative().parentTop().parentStart().text("TOP LEFT").build(row3Item1);
         new ButtonBuilder().wrap().inRelative().parentTop().parentEnd().text("TOP RIGHT").build(row3Item1);
+
         View row3Below = new ButtonBuilder().wrap().inRelative().below(row3Center).centerHorizontal().text("B").build(row3Item1);
+
         new ButtonBuilder().wrap().inRelative().below(row3Center).startOf(row3Below).text("L").build(row3Item1);
         new ButtonBuilder().wrap().inRelative().below(row3Center).endOf(row3Below).text("R").build(row3Item1);
 
-        // ImageView
-        new ImageViewBuilder().load(rowItem)
+        // ImageView and ScrollView
+        LinearLayout scroll = new LinearLayoutBuilder()
+                .height(WRAP_CONTENT)
+                .vertical()
+                .build(new ScrollViewBuilder()
+                        .load(rowItem)
+                        .overScrollMode(View.OVER_SCROLL_NEVER)
+                        .build(row3));
+
+        ImageViewBuilder fox =new ImageViewBuilder().width(MATCH_PARENT).height(WRAP_CONTENT).inLinear()
                 .image(R.drawable.fox)
-                .scale(ImageView.ScaleType.CENTER_CROP)
-                .build(row3);
+                .scale(ScaleType.CENTER_INSIDE);
+        fox.build(scroll);
+        fox.scale(ScaleType.FIT_CENTER).build(scroll);
 
         setContentView(root);
 
