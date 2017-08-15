@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.threedbj.viewbuilder.ButtonBuilder;
+import com.threedbj.viewbuilder.CheckBoxBuilder;
 import com.threedbj.viewbuilder.EditTextBuilder;
 import com.threedbj.viewbuilder.FrameLayoutBuilder;
 import com.threedbj.viewbuilder.ImageViewBuilder;
@@ -39,6 +42,7 @@ public class AllWidgetsActivity extends AppCompatActivity {
     private final int GH_FONT = 1;
     TextView helloWorld;
     ProgressBar usefulBar;
+    CompoundButton check1, check2, check3;
     Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
@@ -138,7 +142,7 @@ public class AllWidgetsActivity extends AppCompatActivity {
         new ButtonBuilder().wrap().inRelative().below(row3Center).startOf(row3Below).text("L").build(row3Item1);
         new ButtonBuilder().wrap().inRelative().below(row3Center).endOf(row3Below).text("R").build(row3Item1);
 
-        // ImageView, ProgressBar in ScrollView
+        // CheckBox, ProgressBar, ImageView in ScrollView
         LinearLayout scroll = new LinearLayoutBuilder()
                 .height(WRAP_CONTENT)
                 .vertical()
@@ -146,9 +150,28 @@ public class AllWidgetsActivity extends AppCompatActivity {
                         .load(rowItem)
                         .overScrollMode(View.OVER_SCROLL_NEVER)
                         .build(row3));
+
+        CheckBoxBuilder check = new CheckBoxBuilder().inLinear().checkedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(check1.isChecked() && check2.isChecked() && check3.isChecked()) {
+                    if(compoundButton == check1) {
+                        check2.setChecked(false);
+                    } else if(compoundButton == check2) {
+                        check3.setChecked(false);
+                    } else {
+                        check1.setChecked(false);
+                    }
+                }
+            }
+        });
+        LinearLayout checkLayout = new LinearLayoutBuilder().inLinear().height(WRAP_CONTENT).build(scroll);
+        check1 = check.build(checkLayout);
+        check2 = check.build(checkLayout);
+        check3 = check.build(checkLayout);
+
         new ProgressBarBuilder().height(WRAP_CONTENT).inLinear().build(scroll);
         usefulBar = new ProgressBarBuilder().height(WRAP_CONTENT).determinate().max(10).progress(5).inLinear().build(scroll);
-
 
         ImageViewBuilder fox = new ImageViewBuilder().height(WRAP_CONTENT).inLinear()
                 .image(R.drawable.fox)
