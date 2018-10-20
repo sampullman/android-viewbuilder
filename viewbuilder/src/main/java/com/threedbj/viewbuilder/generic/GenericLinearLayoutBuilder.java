@@ -23,6 +23,11 @@ public abstract class GenericLinearLayoutBuilder<B extends GenericLinearLayoutBu
         return v;
     }
 
+    public B weightSum(float sum) {
+        this.weightSum = sum;
+        return (B)this;
+    }
+
     public B vertical() {
         this.orientation = VERTICAL;
         return (B)this;
