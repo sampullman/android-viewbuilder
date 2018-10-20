@@ -11,6 +11,7 @@ import com.threedbj.viewbuilder.ButtonBuilder;
 import com.threedbj.viewbuilder.FrameLayoutBuilder;
 import com.threedbj.viewbuilder.LinearLayoutBuilder;
 import com.threedbj.viewbuilder.ViewBuilder;
+import com.threedbj.viewbuilder.style.Style;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,7 +27,7 @@ public class SampleActivity extends AppCompatActivity {
         FrameLayoutBuilder frameBuilder = new FrameLayoutBuilder()
                 .inLinear().height(0);
         ButtonBuilder buttonBuilder = new ButtonBuilder()
-                .wrap()
+                .style(Style.WRAP)
                 .text("All Widgets")
                 .gravity(CENTER)
                 .inFrame().layoutGravity(CENTER)

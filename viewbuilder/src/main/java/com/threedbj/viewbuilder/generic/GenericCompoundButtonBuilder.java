@@ -16,13 +16,14 @@ public abstract class GenericCompoundButtonBuilder<B extends GenericCompoundButt
     }
 
     public V build(Context c, V v) {
+        super.build(c, v);
         if(checkedChangeListener != null) {
             v.setOnCheckedChangeListener(checkedChangeListener);
         }
         if(checked) {
             v.setChecked(checked);
         }
-        return super.build(c, v);
+        return v;
     }
 
     public B checkedChangeListener(OnCheckedChangeListener checkedChangeListener) {

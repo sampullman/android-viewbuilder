@@ -77,6 +77,8 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
     }
 
     public V build(Context c, V v) {
+        super.build(c, v);
+
         v.setText(text);
         v.setHint(hint);
         v.setTextSize(textSize);
@@ -102,7 +104,7 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
             v.setTypeface(v.getTypeface(), style);
         }
 
-        return super.build(c, v);
+        return v;
     }
 
     public B gravity(int gravity) {

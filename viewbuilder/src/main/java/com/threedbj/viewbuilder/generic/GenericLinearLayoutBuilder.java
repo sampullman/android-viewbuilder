@@ -16,8 +16,9 @@ public abstract class GenericLinearLayoutBuilder<B extends GenericLinearLayoutBu
     }
 
     public V build(Context c, V v) {
+        super.build(c, v);
         v.setOrientation(this.orientation);
-        return super.build(c, v);
+        return v;
     }
 
     public B vertical() {

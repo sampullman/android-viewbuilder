@@ -20,6 +20,7 @@ public abstract class GenericListViewBuilder<B extends GenericListViewBuilder<B,
     }
 
     public V build(Context c, V v) {
+        super.build(c, v);
         if(header != null) {
             v.addHeaderView(header);
         }
@@ -32,7 +33,7 @@ public abstract class GenericListViewBuilder<B extends GenericListViewBuilder<B,
         if(dividerHeight != 0) {
             v.setDividerHeight(dividerHeight);
         }
-        return super.build(c, v);
+        return v;
     }
 
     public B header(View header) {

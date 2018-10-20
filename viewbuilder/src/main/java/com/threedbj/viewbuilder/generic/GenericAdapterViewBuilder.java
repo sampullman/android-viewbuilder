@@ -9,8 +9,9 @@ public abstract class GenericAdapterViewBuilder<B extends GenericAdapterViewBuil
     private A adapter;
 
     public V build(Context c, V v) {
+        super.build(c, v);
         v.setAdapter(adapter);
-        return super.build(c, v);
+        return v;
     }
 
     public B adapter(A adapter) {

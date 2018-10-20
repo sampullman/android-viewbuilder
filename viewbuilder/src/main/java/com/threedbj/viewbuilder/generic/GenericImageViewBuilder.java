@@ -24,6 +24,7 @@ public abstract class GenericImageViewBuilder<B extends GenericImageViewBuilder<
     }
 
     public V build(Context c, V v) {
+        super.build(c, v);
         if(Build.VERSION.SDK_INT >= 16) {
             v.setImageAlpha(imageAlpha);
         }
@@ -34,7 +35,7 @@ public abstract class GenericImageViewBuilder<B extends GenericImageViewBuilder<
         }
         v.setScaleType(scaleType);
         v.setContentDescription(contentDescription);
-        return super.build(c, v);
+        return v;
     }
 
     public B imageAlpha(int alpha) {

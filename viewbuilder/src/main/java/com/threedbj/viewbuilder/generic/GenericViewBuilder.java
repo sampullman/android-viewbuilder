@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.threedbj.viewbuilder.style.Style;
 import com.threedbj.viewbuilder.util.Util;
 
 import static android.view.Gravity.CENTER;
@@ -98,6 +99,7 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     }
 
     private boolean generateId;
+    private Style style;
     private float weight = 1f;
     private int layoutWidth = MATCH_PARENT, layoutHeight = MATCH_PARENT;
     private int layoutGravity = CENTER;
@@ -132,6 +134,9 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     }
 
     public V build(Context c, V v) {
+        if(style != null) {
+            style.apply(this);
+        }
         v.setLayoutParams(makeParams());
         if(backgroundColor != -1) {
             v.setBackgroundColor(ContextCompat.getColor(c, backgroundColor));
@@ -184,6 +189,11 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         return params;
     }
 
+    public B style(Style style) {
+        this.style = style;
+        return (B)this;
+    }
+
     public B backgroundColor(@ColorRes int res) {
         this.backgroundColor = res;
         return (B)this;
@@ -196,12 +206,6 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
 
     public B height(int height) {
         this.layoutHeight = height;
-        return (B)this;
-    }
-
-    public B wrap() {
-        this.layoutHeight = WRAP_CONTENT;
-        this.layoutWidth = WRAP_CONTENT;
         return (B)this;
     }
 

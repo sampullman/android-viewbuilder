@@ -19,6 +19,7 @@ public abstract class GenericProgressBarBuilder <B extends GenericProgressBarBui
     }
 
     public V build(Context c, V v) {
+        super.build(c, v);
         if(progress != -1) {
             v.setProgress(progress);
         }
@@ -28,7 +29,7 @@ public abstract class GenericProgressBarBuilder <B extends GenericProgressBarBui
         if(max != -1) {
             v.setMax(max);
         }
-        return super.build(c, v);
+        return v;
     }
 
     public int getStyle() {

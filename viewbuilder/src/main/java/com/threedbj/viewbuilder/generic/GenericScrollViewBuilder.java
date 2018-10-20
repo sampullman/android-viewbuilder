@@ -17,9 +17,10 @@ public abstract class GenericScrollViewBuilder <B extends GenericScrollViewBuild
     }
 
     public V build(Context c, V v) {
+        super.build(c, v);
         v.setFillViewport(fillViewport);
         v.setOverScrollMode(overScrollMode);
-        return super.build(c, v);
+        return v;
     }
 
     public B fillViewport(boolean fill) {

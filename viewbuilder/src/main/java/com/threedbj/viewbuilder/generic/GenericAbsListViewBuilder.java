@@ -20,6 +20,7 @@ public abstract class GenericAbsListViewBuilder<B extends GenericAbsListViewBuil
     }
 
     public V build(Context c, V v) {
+        super.build(c, v);
         if(friction >= 0) {
             v.setFriction(friction);
         }
@@ -27,7 +28,7 @@ public abstract class GenericAbsListViewBuilder<B extends GenericAbsListViewBuil
             v.setSelector(selector);
         }
         v.setOnScrollListener(scrollListener);
-        return super.build(c, v);
+        return v;
     }
 
     public B friction(float friction) {
