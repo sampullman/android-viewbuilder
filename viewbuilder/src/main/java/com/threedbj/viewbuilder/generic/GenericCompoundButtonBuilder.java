@@ -11,7 +11,7 @@ public abstract class GenericCompoundButtonBuilder<B extends GenericCompoundButt
 
     public B load(GenericCompoundButtonBuilder from) {
         this.checkedChangeListener = from.checkedChangeListener;
-        this.checked = checked;
+        this.checked = from.checked;
         return super.load(from);
     }
 

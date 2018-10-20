@@ -2,9 +2,9 @@ package com.threedbj.viewbuilder.generic;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.ColorRes;
-import android.support.annotation.IdRes;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.ColorRes;
+import androidx.annotation.IdRes;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;

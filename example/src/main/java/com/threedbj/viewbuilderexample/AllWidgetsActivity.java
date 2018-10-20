@@ -3,12 +3,9 @@ package com.threedbj.viewbuilderexample;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -33,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
 import threedbj.com.viewbuilderexample.R;
 
 import static android.view.Gravity.CENTER;
@@ -81,12 +79,9 @@ public class AllWidgetsActivity extends AppCompatActivity {
         // Button
         new ButtonBuilder().load(rowItem)
                 .text("Useful Button")
-                .listener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        toast("Look at me!");
-                        usefulBar.setProgress((usefulBar.getProgress()+1) % (usefulBar.getMax() + 1));
-                    }
+                .listener(v -> {
+                    toast("Look at me!");
+                    usefulBar.setProgress((usefulBar.getProgress()+1) % (usefulBar.getMax() + 1));
                 })
                 .build(row1);
 
@@ -151,17 +146,14 @@ public class AllWidgetsActivity extends AppCompatActivity {
                         .overScrollMode(View.OVER_SCROLL_NEVER)
                         .build(row3));
 
-        CheckBoxBuilder check = new CheckBoxBuilder().inLinear().checkedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(check1.isChecked() && check2.isChecked() && check3.isChecked()) {
-                    if(compoundButton == check1) {
-                        check2.setChecked(false);
-                    } else if(compoundButton == check2) {
-                        check3.setChecked(false);
-                    } else {
-                        check1.setChecked(false);
-                    }
+        CheckBoxBuilder check = new CheckBoxBuilder().inLinear().checkedChangeListener((compoundButton, b) -> {
+            if(check1.isChecked() && check2.isChecked() && check3.isChecked()) {
+                if(compoundButton == check1) {
+                    check2.setChecked(false);
+                } else if(compoundButton == check2) {
+                    check3.setChecked(false);
+                } else {
+                    check1.setChecked(false);
                 }
             }
         });

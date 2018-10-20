@@ -2,7 +2,7 @@ package com.threedbj.viewbuilder.generic;
 
 import android.content.Context;
 import android.os.Build.VERSION;
-import android.support.annotation.AttrRes;
+import androidx.annotation.AttrRes;
 import android.widget.ProgressBar;
 
 @SuppressWarnings("unchecked")
