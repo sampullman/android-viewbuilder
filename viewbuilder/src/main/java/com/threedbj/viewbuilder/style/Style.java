@@ -24,7 +24,6 @@ public abstract class Style {
 
     public static class Wide extends Style {
         public void apply(GenericViewBuilder builder) {
-            Log.e("STYLE", "APPLY WIDE");
             builder.width(MATCH_PARENT);
             builder.height(0);
             builder.weight(1);
@@ -33,15 +32,15 @@ public abstract class Style {
 
     public static class Match extends Style {
         public void apply(GenericViewBuilder builder) {
-            builder.width(WRAP_CONTENT);
-            builder.height(WRAP_CONTENT);
+            builder.width(MATCH_PARENT);
+            builder.height(MATCH_PARENT);
         }
     }
 
     public static class Wrap extends Style {
         public void apply(GenericViewBuilder builder) {
-            builder.width(MATCH_PARENT);
-            builder.height(MATCH_PARENT);
+            builder.width(WRAP_CONTENT);
+            builder.height(WRAP_CONTENT);
         }
     }
 
