@@ -1,7 +1,5 @@
 package com.threedbj.viewbuilder.style;
 
-import android.util.Log;
-
 import com.threedbj.viewbuilder.generic.GenericViewBuilder;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
