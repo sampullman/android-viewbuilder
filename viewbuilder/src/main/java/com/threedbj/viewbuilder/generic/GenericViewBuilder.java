@@ -96,8 +96,9 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
             return params;
         }
     }
-
-    private boolean generateId;
+    private static final int ID_GENERATE = -2;
+    private static final int ID_NONE = -1;
+    private int idType = ID_NONE;
     private Style style;
     private float weight = 1f;
     private int layoutWidth = MATCH_PARENT, layoutHeight = MATCH_PARENT;
@@ -110,7 +111,7 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     private RelativeLayoutParams relativeLayoutParams;
 
     public B load(GenericViewBuilder from) {
-        this.generateId = from.generateId;
+        this.idType = from.idType;
         this.weight = from.weight;
         this.layoutWidth = from.layoutWidth;
         this.layoutHeight = from.layoutHeight;
@@ -144,9 +145,22 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         if(clickListener != null) {
             v.setOnClickListener(clickListener);
         }
-        if(generateId) {
-            v.setId(nextId());
-            Log.d("ViewBuilder", "ID: "+v.getId());
+        switch(idType) {
+            case ID_NONE:
+                // No view ID
+                break;
+            case ID_GENERATE:
+                // Get a view ID from the SDK with pre-17 fallback
+                if(Build.VERSION.SDK_INT < 17) {
+                    v.setId(nextId());
+                } else {
+                    v.setId(View.generateViewId());
+                }
+                Log.d("ViewBuilder", "ID: "+v.getId());
+                break;
+            default:
+                v.setId(idType);
+                break;
         }
         return v;
     }
@@ -294,7 +308,12 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     }
 
     public B id() {
-        this.generateId = true;
+        this.idType = ID_GENERATE;
+        return (B)this;
+    }
+
+    public B id(int id) {
+        this.idType = id;
         return (B)this;
     }
 

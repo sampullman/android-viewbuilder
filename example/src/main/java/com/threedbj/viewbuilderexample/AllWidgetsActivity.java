@@ -179,7 +179,16 @@ public class AllWidgetsActivity extends AppCompatActivity {
         check3 = check.build(checkLayout);
 
         new ProgressBarBuilder().height(WRAP_CONTENT).inLinear().build(scroll);
-        usefulBar = new ProgressBarBuilder().height(WRAP_CONTENT).determinate().max(10).progress(5).inLinear().build(scroll);
+        final int PROGRESS_ID = 42;
+        new ProgressBarBuilder()
+            .id(PROGRESS_ID)
+            .height(WRAP_CONTENT)
+            .determinate().max(10)
+            .progress(5)
+            .inLinear()
+            .build(scroll);
+        usefulBar = scroll.findViewById(PROGRESS_ID);
+        usefulBar.setProgress(7);
 
         ImageViewBuilder fox = new ImageViewBuilder()
             .height(WRAP_CONTENT)
