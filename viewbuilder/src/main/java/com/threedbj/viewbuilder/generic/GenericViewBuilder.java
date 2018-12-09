@@ -20,7 +20,6 @@ import com.threedbj.viewbuilder.util.Util;
 
 import static android.view.Gravity.CENTER;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 @SuppressWarnings("unchecked")
 public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V extends View> {
@@ -141,14 +140,13 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         if(backgroundColor != -1) {
             v.setBackgroundColor(ContextCompat.getColor(c, backgroundColor));
         }
-        Log.d("ViewBuilder", String.format("Building: %d %d : %d", layoutWidth, layoutHeight, parentType.ordinal()));
         v.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
         if(clickListener != null) {
             v.setOnClickListener(clickListener);
         }
         if(generateId) {
             v.setId(nextId());
-            Log.d("ViewBuilder", "ID: "+Integer.toString(v.getId()));
+            Log.d("ViewBuilder", "ID: "+v.getId());
         }
         return v;
     }
@@ -172,20 +170,18 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         switch(parentType) {
             case LINEAR:
                 params = new LinearLayout.LayoutParams(layoutWidth, layoutHeight, weight);
-                params.setMargins(marginLeft, marginTop, marginRight, marginBottom);
                 break;
             case RELATIVE:
                 params = new RelativeLayout.LayoutParams(layoutWidth, layoutHeight);
-                params.setMargins(marginLeft, marginTop, marginRight, marginBottom);
                 relativeParams().addRules((RelativeLayout.LayoutParams)params);
                 break;
             case FRAME:
                 params = new FrameLayout.LayoutParams(layoutWidth, layoutHeight, layoutGravity);
-                params.setMargins(marginLeft, marginTop, marginRight, marginBottom);
                 break;
             default:
                 return new LayoutParams(layoutWidth, layoutHeight);
         }
+        params.setMargins(marginLeft, marginTop, marginRight, marginBottom);
         return params;
     }
 

@@ -9,7 +9,7 @@ import static android.widget.LinearLayout.VERTICAL;
 @SuppressWarnings("unchecked")
 public abstract class GenericLinearLayoutBuilder<B extends GenericLinearLayoutBuilder<B, V>, V extends LinearLayout> extends GenericViewGroupBuilder<B, V> {
     private int orientation = HORIZONTAL;
-    private float weightSum = 1.0f;
+    private float weightSum = -1.0f;
 
     public B load(GenericLinearLayoutBuilder from) {
         this.orientation = from.orientation;
@@ -18,7 +18,9 @@ public abstract class GenericLinearLayoutBuilder<B extends GenericLinearLayoutBu
 
     public V build(Context c, V v) {
         super.build(c, v);
-        v.setWeightSum(weightSum);
+        if(weightSum >= 0) {
+            v.setWeightSum(weightSum);
+        }
         v.setOrientation(this.orientation);
         return v;
     }

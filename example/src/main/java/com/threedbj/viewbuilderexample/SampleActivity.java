@@ -2,6 +2,7 @@ package com.threedbj.viewbuilderexample;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.view.View.OnClickListener;
@@ -21,7 +22,7 @@ public class SampleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LinearLayout root = new LinearLayoutBuilder().vertical().build(this);
+        LinearLayout root = new LinearLayoutBuilder().style(Style.MATCH).vertical().build(this);
         ViewBuilder emptyBuilder = new ViewBuilder().inLinear().height(0);
 
         FrameLayoutBuilder frameBuilder = new FrameLayoutBuilder()
@@ -36,11 +37,13 @@ public class SampleActivity extends AppCompatActivity {
 
         FrameLayout vg1 = frameBuilder.build(root);
         buttonBuilder.build(vg1);
+        LinearLayout.LayoutParams p = (LinearLayout.LayoutParams)vg1.getLayoutParams();
 
         FrameLayout vg2 = frameBuilder.build(root);
         buttonBuilder.text("Programmatic")
                 .listener(programmaticListener)
                 .build(vg2);
+        p = (LinearLayout.LayoutParams)vg2.getLayoutParams();
 
         emptyBuilder.build(root);
         emptyBuilder.build(root);
