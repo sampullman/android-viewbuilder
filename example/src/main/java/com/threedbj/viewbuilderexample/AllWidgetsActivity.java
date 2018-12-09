@@ -141,7 +141,14 @@ public class AllWidgetsActivity extends AppCompatActivity {
         new ButtonBuilder().style(Style.WRAP).inRelative().parentTop().parentStart().text("TOP LEFT").build(row3Item1);
         new ButtonBuilder().style(Style.WRAP).inRelative().parentTop().parentEnd().text("TOP RIGHT").build(row3Item1);
 
-        View row3Below = new ButtonBuilder().style(Style.WRAP).inRelative().below(row3Center).centerHorizontal().text("B").build(row3Item1);
+        View row3Below = new ButtonBuilder()
+            .style(Style.WRAP)
+            .inRelative()
+            .below(row3Center)
+            .centerHorizontal()
+            .textSizeSp(this, 15)
+            .text("B")
+            .build(row3Item1);
 
         new ButtonBuilder().style(Style.WRAP).inRelative().below(row3Center).startOf(row3Below).text("L").build(row3Item1);
         new ButtonBuilder().style(Style.WRAP).inRelative().below(row3Center).endOf(row3Below).text("R").build(row3Item1);

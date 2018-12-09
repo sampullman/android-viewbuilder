@@ -1,9 +1,12 @@
 package com.threedbj.viewbuilder.generic;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import androidx.annotation.ColorRes;
 import androidx.core.content.ContextCompat;
+
+import android.util.DisplayMetrics;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -125,6 +128,12 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
     public B textSize(float textSize) {
         this.textSize = textSize;
         return (B)this;
+    }
+
+    public B textSizeSp(Activity context, float textSizeSp) {
+        DisplayMetrics dm = new DisplayMetrics();
+        context.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        return textSize(textSizeSp * dm.scaledDensity);
     }
 
     public B color(@ColorRes int color) {
