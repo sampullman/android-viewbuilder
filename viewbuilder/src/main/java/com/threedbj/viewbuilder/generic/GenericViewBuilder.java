@@ -302,7 +302,7 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         return (B)this;
     }
 
-    public B listener(OnClickListener listener) {
+    public B click(OnClickListener listener) {
         this.clickListener = listener;
         return (B)this;
     }

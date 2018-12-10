@@ -83,7 +83,7 @@ public class AllWidgetsActivity extends AppCompatActivity {
         // Button
         new ButtonBuilder().load(rowItem)
             .text("Useful Button")
-            .listener(v -> {
+            .click(v -> {
                 toast("Look at me!");
                 usefulBar.setProgress((usefulBar.getProgress()+1) % (usefulBar.getMax() + 1));
             })
