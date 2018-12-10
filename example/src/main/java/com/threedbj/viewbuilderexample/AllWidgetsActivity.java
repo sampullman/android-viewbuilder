@@ -119,6 +119,7 @@ public class AllWidgetsActivity extends AppCompatActivity {
         new ListViewBuilder()
             .adapter(itemsAdapter)
             .backgroundColor(R.color.light_gray)
+            .itemClick((parent, v, position, id) -> toast(String.format("Clicked item %d", position)))
             .build(new FrameLayoutBuilder()
                 .load(rowItem)
                 .build(row2));
