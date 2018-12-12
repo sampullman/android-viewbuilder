@@ -1,7 +1,9 @@
 package com.threedbj.viewbuilder.generic;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
@@ -29,6 +31,38 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
 
     private enum ParentType {
         VIEWGROUP, LINEAR, FRAME, RELATIVE
+    }
+
+    private enum ClickableType {
+        NONE, NO_CLICK, CLICK
+    }
+
+    // Too bad Java doesn't have union types
+    private static final class Background {
+        @DrawableRes int resource = -1;
+        Drawable drawable;
+        @ColorRes int color = -1;
+        boolean isSet = false;
+        void set(@DrawableRes int resource, Drawable drawable, @ColorRes int color) {
+            this.resource = resource;
+            this.drawable = drawable;
+            this.color = color;
+            isSet = true;
+        }
+        protected Background clone() {
+            Background b = new Background();
+            b.set(this.resource, this.drawable, this.color);
+            return b;
+        }
+        void setResource(@DrawableRes int resource) {
+            set(resource, null, -1);
+        }
+        void setDrawable(Drawable drawable) {
+            set(-1, drawable, -1);
+        }
+        void setColor(@ColorRes int color) {
+            set(-1, null, color);
+        }
     }
 
     // Special class to avoid some copies in load() during normal use
@@ -105,12 +139,13 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     private float weight = 1f;
     private int layoutWidth = MATCH_PARENT, layoutHeight = MATCH_PARENT;
     private int layoutGravity = CENTER;
-    private @ColorRes int backgroundColor = -1;
-    private @DrawableRes int backgroundRes = -1;
-    private Drawable background;
+    private Background background;
+    private Background backgroundFocused;
+    private Background backgroundPressed;
     private int paddingLeft, paddingTop, paddingRight, paddingBottom;
     private int marginLeft, marginTop, marginRight, marginBottom;
     private ParentType parentType = ParentType.VIEWGROUP;
+    private ClickableType clickable = ClickableType.NONE;
     private OnClickListener clickListener;
     private RelativeLayoutParams relativeLayoutParams;
 
@@ -120,9 +155,15 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         this.layoutWidth = from.layoutWidth;
         this.layoutHeight = from.layoutHeight;
         this.layoutGravity = from.layoutGravity;
-        this.backgroundColor = from.backgroundColor;
-        this.backgroundRes = from.backgroundRes;
-        this.background = from.background;
+        if(from.background != null) {
+            this.background = from.background.clone();
+        }
+        if(from.backgroundFocused != null) {
+            this.backgroundFocused = from.backgroundFocused.clone();
+        }
+        if(from.backgroundPressed != null) {
+            this.backgroundPressed = from.backgroundPressed.clone();
+        }
         this.paddingLeft = from.paddingLeft;
         this.paddingTop = from.paddingTop;
         this.paddingRight = from.paddingRight;
@@ -144,17 +185,29 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
             style.apply(this);
         }
         v.setLayoutParams(makeParams());
-        if(backgroundColor != -1) {
-            v.setBackgroundColor(ContextCompat.getColor(c, backgroundColor));
-        }
-        if(background != null) {
-            v.setBackground(background);
-        } else if(backgroundRes != -1) {
-            v.setBackgroundResource(backgroundRes);
+        if((backgroundFocused != null && backgroundFocused.isSet)
+            || (backgroundPressed != null && backgroundPressed.isSet)) {
+
+            StateListDrawable states = new StateListDrawable();
+            addStateDrawable(c, states, android.R.attr.state_pressed, backgroundPressed);
+            addStateDrawable(c, states, android.R.attr.state_pressed, backgroundFocused);
+            addStateDrawable(c, states, 0, background);
+            v.setBackground(states);
+        } else if(background != null && background.isSet) {
+            if(background.color != -1) {
+                v.setBackgroundColor(ContextCompat.getColor(c, background.color));
+            } else if(background.drawable != null) {
+                v.setBackground(background.drawable);
+            } else if(background.resource != -1) {
+                v.setBackgroundResource(background.resource);
+            }
         }
         v.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
         if(clickListener != null) {
             v.setOnClickListener(clickListener);
+        }
+        if(clickable != ClickableType.NONE) {
+            v.setClickable(clickable == ClickableType.CLICK);
         }
         switch(idType) {
             case ID_NONE:
@@ -210,23 +263,99 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         return params;
     }
 
+    private void addStateDrawable(Context c, StateListDrawable states, int state, Background background) {
+        if(background == null) {
+            return;
+        }
+        int[] stateSet;
+        if(state == 0) {
+            stateSet = new int[] {};
+        } else {
+            stateSet = new int[] { state };
+        }
+        Drawable drawable = background.drawable;
+        if(background.color != -1) {
+            drawable = new ColorDrawable(ContextCompat.getColor(c, background.color));
+        } else if(background.resource != -1) {
+            drawable = ContextCompat.getDrawable(c, background.resource);
+        }
+        states.addState(stateSet, drawable);
+    }
+
     public B style(Style style) {
         this.style = style;
         return (B)this;
     }
 
     public B backgroundColor(@ColorRes int res) {
-        this.backgroundColor = res;
+        if(this.background == null) {
+            this.background = new Background();
+        }
+        this.background.setColor(res);
         return (B)this;
     }
 
     public B background(@DrawableRes int res) {
-        this.backgroundRes = res;
+        if(this.background == null) {
+            this.background = new Background();
+        }
+        this.background.setResource(res);
         return (B)this;
     }
 
     public B background(Drawable background) {
-        this.background = background;
+        if(this.background == null) {
+            this.background = new Background();
+        }
+        this.background.setDrawable(background);
+        return (B)this;
+    }
+
+    public B backgroundFocusedColor(@ColorRes int res) {
+        if(this.backgroundFocused == null) {
+            this.backgroundFocused = new Background();
+        }
+        this.backgroundFocused.setColor(res);
+        return (B)this;
+    }
+
+    public B backgroundFocused(@DrawableRes int res) {
+        if(this.backgroundFocused == null) {
+            this.backgroundFocused = new Background();
+        }
+        this.backgroundFocused.setResource(res);
+        return (B)this;
+    }
+
+    public B backgroundFocused(Drawable background) {
+        if(this.backgroundFocused == null) {
+            this.backgroundFocused = new Background();
+        }
+        this.backgroundFocused.setDrawable(background);
+        return (B)this;
+    }
+
+    public B backgroundPressedColor(@ColorRes int res) {
+        if(this.backgroundPressed == null) {
+            this.backgroundPressed = new Background();
+        }
+        this.backgroundPressed.setColor(res);
+        return (B)this;
+    }
+
+    public B backgroundPressed(@DrawableRes int res) {
+        if(this.backgroundPressed == null) {
+            this.backgroundPressed = new Background();
+        }
+        this.backgroundPressed.setResource(res);
+        return (B)this;
+    }
+
+    public B backgroundPressed(Drawable background) {
+        if(this.backgroundPressed == null) {
+            this.backgroundPressed = new Background();
+        }
+        this.backgroundPressed.setDrawable(background);
         return (B)this;
     }
 
@@ -320,6 +449,11 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
 
     public B weight(float weight) {
         this.weight = weight;
+        return (B)this;
+    }
+
+    public B clickable(boolean clickable) {
+        this.clickable = clickable ? ClickableType.CLICK : ClickableType.NO_CLICK;
         return (B)this;
     }
 

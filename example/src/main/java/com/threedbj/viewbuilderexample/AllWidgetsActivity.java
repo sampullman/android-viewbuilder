@@ -132,7 +132,11 @@ public class AllWidgetsActivity extends AppCompatActivity {
             .text("Hello").textSize(24f)
             .bold().italic()
             .style(Style.WRAP).inFrame().layoutGravity(CENTER)
-            .build(new FrameLayoutBuilder().load(rowItem)
+            .build(new FrameLayoutBuilder()
+                .load(rowItem)
+                .clickable(true)
+                .backgroundColor(R.color.light_gray)
+                .backgroundPressedColor(R.color.white)
                 .build(row2));
 
         LinearLayout row3 = new LinearLayoutBuilder().load(row).build(root);
