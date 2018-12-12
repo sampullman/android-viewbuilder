@@ -35,6 +35,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import threedbj.com.viewbuilderexample.R;
 
 import static android.view.Gravity.CENTER;
+import static android.view.Gravity.CENTER_VERTICAL;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class AllWidgetsActivity extends AppCompatActivity {
@@ -76,8 +77,10 @@ public class AllWidgetsActivity extends AppCompatActivity {
             .inLinear()
             .style(Style.WIDE)
             .text("Pad left")
+            .background(R.drawable.android)
             .color(R.color.redish)
-            .paddingLeft(16)
+            .gravity(CENTER_VERTICAL)
+            .paddingLeft(36)
             .build(row1Column1);
 
         // Button

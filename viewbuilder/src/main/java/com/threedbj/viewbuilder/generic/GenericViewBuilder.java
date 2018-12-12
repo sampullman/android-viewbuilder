@@ -1,8 +1,10 @@
 package com.threedbj.viewbuilder.generic;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.core.content.ContextCompat;
 import android.util.Log;
@@ -104,6 +106,8 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     private int layoutWidth = MATCH_PARENT, layoutHeight = MATCH_PARENT;
     private int layoutGravity = CENTER;
     private @ColorRes int backgroundColor = -1;
+    private @DrawableRes int backgroundRes = -1;
+    private Drawable background;
     private int paddingLeft, paddingTop, paddingRight, paddingBottom;
     private int marginLeft, marginTop, marginRight, marginBottom;
     private ParentType parentType = ParentType.VIEWGROUP;
@@ -117,6 +121,8 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         this.layoutHeight = from.layoutHeight;
         this.layoutGravity = from.layoutGravity;
         this.backgroundColor = from.backgroundColor;
+        this.backgroundRes = from.backgroundRes;
+        this.background = from.background;
         this.paddingLeft = from.paddingLeft;
         this.paddingTop = from.paddingTop;
         this.paddingRight = from.paddingRight;
@@ -140,6 +146,11 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         v.setLayoutParams(makeParams());
         if(backgroundColor != -1) {
             v.setBackgroundColor(ContextCompat.getColor(c, backgroundColor));
+        }
+        if(background != null) {
+            v.setBackground(background);
+        } else if(backgroundRes != -1) {
+            v.setBackgroundResource(backgroundRes);
         }
         v.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
         if(clickListener != null) {
@@ -206,6 +217,16 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
 
     public B backgroundColor(@ColorRes int res) {
         this.backgroundColor = res;
+        return (B)this;
+    }
+
+    public B background(@DrawableRes int res) {
+        this.backgroundRes = res;
+        return (B)this;
+    }
+
+    public B background(Drawable background) {
+        this.background = background;
         return (B)this;
     }
 

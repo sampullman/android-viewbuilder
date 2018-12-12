@@ -25,9 +25,7 @@ public abstract class GenericImageViewBuilder<B extends GenericImageViewBuilder<
 
     public V build(Context c, V v) {
         super.build(c, v);
-        if(Build.VERSION.SDK_INT >= 16) {
-            v.setImageAlpha(imageAlpha);
-        }
+        v.setImageAlpha(imageAlpha);
         if(drawable != null) {
             v.setImageDrawable(drawable);
         } else if(resource != 0) {
