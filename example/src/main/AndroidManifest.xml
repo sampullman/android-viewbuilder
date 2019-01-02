@@ -19,9 +19,6 @@
         <activity
             android:name="com.threedbj.viewbuilderexample.AllWidgetsActivity"
             android:label="@string/all_widgets_title" />
-        <activity
-            android:name="com.threedbj.viewbuilderexample.ProgrammaticActivity"
-            android:label="@string/programmatic_title" />
     </application>
 
 </manifest>
