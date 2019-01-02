@@ -364,8 +364,18 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         return (B)this;
     }
 
+    public B widthDp(int widthDp) {
+        this.layoutWidth = Util.dpToPx(widthDp);
+        return (B)this;
+    }
+
     public B height(int height) {
         this.layoutHeight = height;
+        return (B)this;
+    }
+
+    public B heightDp(int heightDp) {
+        this.layoutHeight = Util.dpToPx(heightDp);
         return (B)this;
     }
 
