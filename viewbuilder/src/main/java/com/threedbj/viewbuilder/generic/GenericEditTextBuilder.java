@@ -8,8 +8,8 @@ import android.widget.EditText;
 @SuppressWarnings("unchecked")
 public abstract class GenericEditTextBuilder<B extends GenericEditTextBuilder<B, V>, V extends EditText> extends GenericTextViewBuilder<B, V> {
     private int inputType = -1;
-    String digits;
-    InputFilter[] filters;
+    private String digits;
+    private InputFilter[] filters;
 
     public B load(GenericEditTextBuilder from) {
         this.inputType = from.inputType;
@@ -26,7 +26,9 @@ public abstract class GenericEditTextBuilder<B extends GenericEditTextBuilder<B,
         if(digits != null) {
             v.setKeyListener(DigitsKeyListener.getInstance(digits));
         }
-        v.setFilters(filters);
+        if(filters != null) {
+            v.setFilters(filters);
+        }
         return v;
     }
 

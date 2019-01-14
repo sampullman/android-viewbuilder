@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -35,6 +36,10 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
 
     private enum ClickableType {
         NONE, NO_CLICK, CLICK
+    }
+
+    private enum FocusType {
+        NONE, NO_FOCUS, FOCUS
     }
 
     // Too bad Java doesn't have union types
@@ -103,7 +108,7 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
             }
         }
 
-        RelativeLayout.LayoutParams addRules(RelativeLayout.LayoutParams params) {
+        void addRules(RelativeLayout.LayoutParams params) {
             addRule(params, RelativeLayout.ABOVE, above);
             addRule(params, RelativeLayout.ALIGN_BASELINE, alignBaseline);
             addRule(params, RelativeLayout.ALIGN_BOTTOM, alignBottom);
@@ -129,7 +134,6 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
             addRule(params, RelativeLayout.CENTER_HORIZONTAL, centerHorizontal);
             addRule(params, RelativeLayout.CENTER_VERTICAL, centerVertical);
             addRule(params, RelativeLayout.CENTER_IN_PARENT, center);
-            return params;
         }
     }
     private static final int ID_GENERATE = -2;
@@ -146,7 +150,9 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     private int marginLeft, marginTop, marginRight, marginBottom;
     private ParentType parentType = ParentType.VIEWGROUP;
     private ClickableType clickable = ClickableType.NONE;
+    private FocusType focusable = FocusType.NONE;
     private OnClickListener clickListener;
+    private OnFocusChangeListener focusChangeListener;
     private RelativeLayoutParams relativeLayoutParams;
 
     public B load(GenericViewBuilder from) {
@@ -174,6 +180,7 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         this.marginBottom = from.marginBottom;
         this.parentType = from.parentType;
         this.clickListener = from.clickListener;
+        this.focusChangeListener = from.focusChangeListener;
         if(from.relativeLayoutParams != null) {
             this.relativeLayoutParams = new RelativeLayoutParams(from.relativeLayoutParams);
         }
@@ -206,8 +213,15 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         if(clickListener != null) {
             v.setOnClickListener(clickListener);
         }
+        if(focusChangeListener != null) {
+            v.setOnFocusChangeListener(focusChangeListener);
+        }
         if(clickable != ClickableType.NONE) {
             v.setClickable(clickable == ClickableType.CLICK);
+        }
+        if(focusable != FocusType.NONE) {
+            v.setFocusable(focusable == FocusType.FOCUS);
+            v.setFocusableInTouchMode(focusable == FocusType.FOCUS);
         }
         switch(idType) {
             case ID_NONE:
@@ -467,8 +481,18 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         return (B)this;
     }
 
+    public B focusable(boolean focusable) {
+        this.focusable = focusable ? FocusType.FOCUS : FocusType.NO_FOCUS;
+        return (B)this;
+    }
+
     public B click(OnClickListener listener) {
         this.clickListener = listener;
+        return (B)this;
+    }
+
+    public B focus(OnFocusChangeListener listener) {
+        this.focusChangeListener = listener;
         return (B)this;
     }
 

@@ -2,7 +2,6 @@ package com.threedbj.viewbuilder.generic;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import androidx.annotation.DrawableRes;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;

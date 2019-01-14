@@ -53,6 +53,7 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
     private CharSequence hint;
     private @ColorRes int textColor = -1;
     private float textSize = 16f;
+    private int textSelectable = -1;
     private Typeface typeface = DEFAULT_FONT;
     private String fontPath;
     private int style = Typeface.NORMAL;
@@ -64,6 +65,7 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
         this.hint = from.hint;
         this.textColor = from.textColor;
         this.textSize = from.textSize;
+        this.textSelectable = from.textSelectable;
         this.typeface = from.typeface;
         this.fontPath = from.fontPath;
         this.style = from.style;
@@ -85,6 +87,9 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
         v.setText(text);
         v.setHint(hint);
         v.setTextSize(textSize);
+        if(textSelectable != -1) {
+            v.setTextIsSelectable(textSelectable == 1);
+        }
 
         if(gravity != -1) {
             v.setGravity(gravity);
@@ -134,6 +139,11 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
         DisplayMetrics dm = new DisplayMetrics();
         context.getWindowManager().getDefaultDisplay().getMetrics(dm);
         return textSize(textSizeSp * dm.scaledDensity);
+    }
+
+    public B textSelectable(boolean selectable) {
+        this.textSelectable = selectable ? 1 : 0;
+        return (B)this;
     }
 
     public B color(@ColorRes int color) {
