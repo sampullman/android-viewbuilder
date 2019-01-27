@@ -56,7 +56,7 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
     private int textSelectable = -1;
     private Typeface typeface = DEFAULT_FONT;
     private String fontPath;
-    private int style = Typeface.NORMAL;
+    private int textStyle = Typeface.NORMAL;
     private boolean firstFocus = true;
 
     public B load(GenericTextViewBuilder from) {
@@ -68,7 +68,7 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
         this.textSelectable = from.textSelectable;
         this.typeface = from.typeface;
         this.fontPath = from.fontPath;
-        this.style = from.style;
+        this.textStyle = from.textStyle;
         this.firstFocus = from.firstFocus;
         return super.load(from);
     }
@@ -100,16 +100,16 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
         }
 
         if(typeface != null) {
-            v.setTypeface(typeface, style);
+            v.setTypeface(typeface, textStyle);
 
         } else if(fontPath != null) {
 
             this.typeface = addFont(c, fontPath, false);
-            v.setTypeface(typeface, style);
+            v.setTypeface(typeface, textStyle);
             this.fontPath = null;
 
-        } else if(style != Typeface.NORMAL) {
-            v.setTypeface(v.getTypeface(), style);
+        } else if(textStyle != Typeface.NORMAL) {
+            v.setTypeface(v.getTypeface(), textStyle);
         }
 
         return v;
@@ -152,19 +152,19 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
     }
 
     public B bold() {
-        if(style == Typeface.NORMAL) {
-            style = Typeface.BOLD;
-        } else if(style == Typeface.ITALIC) {
-            style = Typeface.BOLD_ITALIC;
+        if(textStyle == Typeface.NORMAL) {
+            textStyle = Typeface.BOLD;
+        } else if(textStyle == Typeface.ITALIC) {
+            textStyle = Typeface.BOLD_ITALIC;
         }
         return (B)this;
     }
 
     public B italic() {
-        if(style == Typeface.NORMAL) {
-            style = Typeface.ITALIC;
-        } else if(style == Typeface.BOLD) {
-            style = Typeface.BOLD_ITALIC;
+        if(textStyle == Typeface.NORMAL) {
+            textStyle = Typeface.ITALIC;
+        } else if(textStyle == Typeface.BOLD) {
+            textStyle = Typeface.BOLD_ITALIC;
         }
         return (B)this;
     }

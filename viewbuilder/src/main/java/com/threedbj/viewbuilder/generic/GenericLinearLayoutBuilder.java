@@ -13,6 +13,7 @@ public abstract class GenericLinearLayoutBuilder<B extends GenericLinearLayoutBu
 
     public B load(GenericLinearLayoutBuilder from) {
         this.orientation = from.orientation;
+        this.weightSum = from.weightSum;
         return super.load(from);
     }
 
