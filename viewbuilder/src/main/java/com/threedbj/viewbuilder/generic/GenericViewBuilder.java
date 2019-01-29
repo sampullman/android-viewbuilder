@@ -140,6 +140,7 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     private static final int ID_NONE = -1;
     private int idType = ID_NONE;
     private Style style;
+    private int visibility = View.VISIBLE;
     private float weight = 1f;
     private int layoutWidth = MATCH_PARENT, layoutHeight = MATCH_PARENT;
     private int layoutGravity = CENTER;
@@ -158,6 +159,7 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     public B load(GenericViewBuilder from) {
         this.idType = from.idType;
         this.weight = from.weight;
+        this.visibility = from.visibility;
         this.layoutWidth = from.layoutWidth;
         this.layoutHeight = from.layoutHeight;
         this.layoutGravity = from.layoutGravity;
@@ -190,6 +192,9 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     public V build(Context c, V v) {
         if(style != null) {
             style.apply(this);
+        }
+        if(visibility != View.VISIBLE) {
+            v.setVisibility(visibility);
         }
         v.setLayoutParams(makeParams());
         if((backgroundFocused != null && backgroundFocused.isSet)
@@ -473,6 +478,11 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
 
     public B weight(float weight) {
         this.weight = weight;
+        return (B)this;
+    }
+
+    public B visibility(int visibility) {
+        this.visibility = visibility;
         return (B)this;
     }
 

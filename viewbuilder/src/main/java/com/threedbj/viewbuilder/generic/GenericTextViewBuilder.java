@@ -6,8 +6,8 @@ import android.graphics.Typeface;
 import androidx.annotation.ColorRes;
 import androidx.core.content.ContextCompat;
 
-import android.util.DisplayMetrics;
 import android.util.SparseArray;
+import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -53,6 +53,7 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
     private CharSequence hint;
     private @ColorRes int textColor = -1;
     private float textSize = 16f;
+    private int textSizeType = TypedValue.COMPLEX_UNIT_SP;
     private int textSelectable = -1;
     private Typeface typeface = DEFAULT_FONT;
     private String fontPath;
@@ -65,6 +66,7 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
         this.hint = from.hint;
         this.textColor = from.textColor;
         this.textSize = from.textSize;
+        this.textSizeType = from.textSizeType;
         this.textSelectable = from.textSelectable;
         this.typeface = from.typeface;
         this.fontPath = from.fontPath;
@@ -86,7 +88,7 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
 
         v.setText(text);
         v.setHint(hint);
-        v.setTextSize(textSize);
+        v.setTextSize(textSizeType, textSize);
         if(textSelectable != -1) {
             v.setTextIsSelectable(textSelectable == 1);
         }
@@ -130,15 +132,16 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
         return (B)this;
     }
 
-    public B textSize(float textSize) {
+    public B textSizePx(float textSize) {
         this.textSize = textSize;
+        this.textSizeType = TypedValue.COMPLEX_UNIT_PX;
         return (B)this;
     }
 
-    public B textSizeSp(Activity context, float textSizeSp) {
-        DisplayMetrics dm = new DisplayMetrics();
-        context.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        return textSize(textSizeSp * dm.scaledDensity);
+    public B textSizeSp(float textSizeSp) {
+        this.textSize = textSizeSp;
+        return (B)this;
+
     }
 
     public B textSelectable(boolean selectable) {
