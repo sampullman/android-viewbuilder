@@ -156,9 +156,18 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     private OnFocusChangeListener focusChangeListener;
     private RelativeLayoutParams relativeLayoutParams;
 
+    public GenericViewBuilder() {}
+
+    public GenericViewBuilder(GenericViewBuilder from) {
+        load(from);
+    }
+
     public B load(GenericViewBuilder from) {
         this.idType = from.idType;
         this.weight = from.weight;
+        this.style = from.style;
+        this.clickable = from.clickable;
+        this.focusable = from.focusable;
         this.visibility = from.visibility;
         this.layoutWidth = from.layoutWidth;
         this.layoutHeight = from.layoutHeight;

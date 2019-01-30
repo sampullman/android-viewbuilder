@@ -5,8 +5,15 @@ import android.graphics.Typeface;
 import android.widget.TextView;
 
 import com.threedbj.viewbuilder.generic.GenericTextViewBuilder;
+import com.threedbj.viewbuilder.style.Style;
 
 public class TextViewBuilder extends GenericTextViewBuilder<TextViewBuilder, TextView> {
+
+    public TextViewBuilder() {}
+
+    public TextViewBuilder(Style style) {
+        style(style);
+    }
 
     public TextView build(Context c) {
         return  build(c, new TextView(c));
