@@ -199,9 +199,6 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
     }
 
     public V build(Context c, V v) {
-        if(style != null) {
-            style.apply(this);
-        }
         if(visibility != View.VISIBLE) {
             v.setVisibility(visibility);
         }
@@ -248,7 +245,6 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
                 } else {
                     v.setId(View.generateViewId());
                 }
-                Log.d("ViewBuilder", "ID: "+v.getId());
                 break;
             default:
                 v.setId(idType);
@@ -312,6 +308,7 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
 
     public B style(Style style) {
         this.style = style;
+        style.apply(this);
         return (B)this;
     }
 
