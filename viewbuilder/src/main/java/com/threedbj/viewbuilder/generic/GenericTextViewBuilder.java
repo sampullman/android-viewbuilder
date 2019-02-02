@@ -59,6 +59,7 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
     private int textStyle = Typeface.NORMAL;
     private boolean firstFocus = true;
     private boolean singleLine;
+    private int imeOptions = -1;
 
     public B load(GenericTextViewBuilder from) {
         this.gravity = from.gravity;
@@ -73,6 +74,7 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
         this.textStyle = from.textStyle;
         this.firstFocus = from.firstFocus;
         this.singleLine = from.singleLine;
+        this.imeOptions = from.imeOptions;
         return super.load(from);
     }
 
@@ -95,6 +97,9 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
         }
         if(singleLine) {
             v.setSingleLine();
+        }
+        if(imeOptions != -1) {
+            v.setImeOptions(imeOptions);
         }
 
         if(gravity != -1) {
@@ -197,6 +202,11 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
 
     public B singleLine() {
         this.singleLine = true;
-            return (B)this;
+        return (B)this;
+    }
+
+    public B imeOptions(int options) {
+        this.imeOptions = options;
+        return (B)this;
     }
 }
