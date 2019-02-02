@@ -11,11 +11,13 @@ public abstract class GenericAbsListViewBuilder<B extends GenericAbsListViewBuil
     private float friction = -1f;
     private OnScrollListener scrollListener;
     @DrawableRes private int selector;
+    private int choiceMode = -1;
 
     public B load(GenericAbsListViewBuilder from) {
         this.friction = from.friction;
         this.selector = from.selector;
         this.scrollListener = from.scrollListener;
+        this.choiceMode = from.choiceMode;
         return super.load(from);
     }
 
@@ -26,6 +28,9 @@ public abstract class GenericAbsListViewBuilder<B extends GenericAbsListViewBuil
         }
         if(selector != 0) {
             v.setSelector(selector);
+        }
+        if(choiceMode != -1) {
+            v.setChoiceMode(choiceMode);
         }
         v.setOnScrollListener(scrollListener);
         return v;
@@ -43,6 +48,11 @@ public abstract class GenericAbsListViewBuilder<B extends GenericAbsListViewBuil
 
     public B scrollListener(OnScrollListener scrollListener) {
         this.scrollListener = scrollListener;
+        return (B)this;
+    }
+
+    public B choiceMode(int mode) {
+        this.choiceMode = mode;
         return (B)this;
     }
 
