@@ -1,6 +1,5 @@
 package com.threedbj.viewbuilder.generic;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import androidx.annotation.ColorRes;
@@ -59,6 +58,7 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
     private String fontPath;
     private int textStyle = Typeface.NORMAL;
     private boolean firstFocus = true;
+    private boolean singleLine;
 
     public B load(GenericTextViewBuilder from) {
         this.gravity = from.gravity;
@@ -72,6 +72,7 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
         this.fontPath = from.fontPath;
         this.textStyle = from.textStyle;
         this.firstFocus = from.firstFocus;
+        this.singleLine = from.singleLine;
         return super.load(from);
     }
 
@@ -91,6 +92,9 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
         v.setTextSize(textSizeType, textSize);
         if(textSelectable != -1) {
             v.setTextIsSelectable(textSelectable == 1);
+        }
+        if(singleLine) {
+            v.setSingleLine();
         }
 
         if(gravity != -1) {
@@ -189,5 +193,10 @@ public abstract class GenericTextViewBuilder<B extends GenericTextViewBuilder<B,
     public B noFirstFocus() {
         this.firstFocus = false;
         return (B)this;
+    }
+
+    public B singleLine() {
+        this.singleLine = true;
+            return (B)this;
     }
 }
