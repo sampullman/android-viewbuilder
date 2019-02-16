@@ -69,7 +69,7 @@ public class AllWidgetsActivity extends AppCompatActivity {
         // TextView
         new TextViewBuilder()
             .load(colItem)
-            .text("Howdy!").textSize(22f)
+            .text("Howdy!").textSizeSp(22f)
             .marginDp(10, 20, 0, 0)
             .color(R.color.blueish)
             .build(row1Column1);
@@ -108,7 +108,7 @@ public class AllWidgetsActivity extends AppCompatActivity {
             .paddingRight(6)
             .marginTop(10)
             .font(GH_FONT)
-            .textSize(14)
+            .textSizeSp(14)
             .gravity(CENTER)
             .text("A custom font. It is good.")
             .build(row1Column3);
@@ -129,7 +129,7 @@ public class AllWidgetsActivity extends AppCompatActivity {
 
         // FrameLayout with TextView
         helloWorld = new TextViewBuilder()
-            .text("Hello").textSize(24f)
+            .text("Hello").textSizeSp(24f)
             .bold().italic()
             .style(Style.WRAP).inFrame().layoutGravity(CENTER)
             .build(new FrameLayoutBuilder()
@@ -154,7 +154,7 @@ public class AllWidgetsActivity extends AppCompatActivity {
             .inRelative()
             .below(row3Center)
             .centerHorizontal()
-            .textSizeSp(this, 15)
+            .textSizeSp(15)
             .text("B")
             .build(row3Item1);
 

@@ -8,6 +8,8 @@ import com.threedbj.viewbuilder.style.Style;
 
 public class RadioGroupBuilder extends GenericRadioGroupBuilder<RadioGroupBuilder, RadioGroup> {
 
+    public RadioGroupBuilder() {}
+
     public RadioGroupBuilder(Style style) {
         style(style);
     }

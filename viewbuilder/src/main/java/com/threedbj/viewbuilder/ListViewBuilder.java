@@ -8,6 +8,8 @@ import com.threedbj.viewbuilder.style.Style;
 
 public class ListViewBuilder extends GenericListViewBuilder<ListViewBuilder, ListView> {
 
+    public ListViewBuilder() {}
+
     public ListViewBuilder(Style style) {
         style(style);
     }

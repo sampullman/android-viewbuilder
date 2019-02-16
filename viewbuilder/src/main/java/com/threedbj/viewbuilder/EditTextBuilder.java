@@ -8,6 +8,8 @@ import com.threedbj.viewbuilder.style.Style;
 
 public class EditTextBuilder extends GenericEditTextBuilder<EditTextBuilder, EditText> {
 
+    public EditTextBuilder() {}
+
     public EditTextBuilder(Style style) {
         style(style);
     }

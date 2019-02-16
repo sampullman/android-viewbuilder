@@ -41,7 +41,7 @@ public class SampleActivity extends AppCompatActivity {
             .text("Demo Activities")
             .style(Style.WRAP)
             .center()
-            .textSize(18)
+            .textSizeSp(18)
             .build(topBar);
         new ViewBuilder()
             .inRelative()
