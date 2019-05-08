@@ -271,7 +271,10 @@ public abstract class GenericViewBuilder<B extends GenericViewBuilder<B, V>, V e
         MarginLayoutParams params;
         switch(parentType) {
             case LINEAR:
-                params = new LinearLayout.LayoutParams(layoutWidth, layoutHeight, weight);
+                LinearLayout.LayoutParams llp;
+                llp = new LinearLayout.LayoutParams(layoutWidth, layoutHeight, weight);
+                llp.gravity = layoutGravity;
+                params = llp;
                 break;
             case RELATIVE:
                 params = new RelativeLayout.LayoutParams(layoutWidth, layoutHeight);
